@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 5, "column": 0}, "map": {"version":3,"sources":["file:///D:/work/sickdays/front/src/app/loading.tsx"],"sourcesContent":["import { Flex, Spin } from \"antd\"\r\n\r\nconst LoadingPage = () => {\r\n  return (\r\n    <Flex\r\n      justify='center'\r\n      align='center'\r\n    >\r\n      <Spin size='large' />\r\n    </Flex>\r\n  )\r\n}\r\n\r\nexport default LoadingPage\r\n"],"names":[],"mappings":";;;;AAAA;;;AAEA,MAAM,cAAc;IAClB,qBACE,8OAAC,mIAAA,CAAA,OAAI;QACH,SAAQ;QACR,OAAM;kBAEN,cAAA,8OAAC,mIAAA,CAAA,OAAI;YAAC,MAAK;;;;;;;;;;;AAGjB;uCAEe","debugId":null}}]
+}

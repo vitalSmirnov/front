@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///D:/work/sickdays/front/src/app/global-error.tsx"],"sourcesContent":["\"use client\"\r\nimport { Empty } from \"antd\"\r\n\r\nexport default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {\r\n  return (\r\n    <html>\r\n      <body>\r\n        <Empty />\r\n      </body>\r\n    </html>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;AACA;AADA;;;AAGe,SAAS,YAAY,KAA2E;QAA3E,EAAE,KAAK,EAAE,KAAK,EAA6D,GAA3E;IAClC,qBACE,6LAAC;kBACC,cAAA,6LAAC;sBACC,cAAA,6LAAC,mLAAA,CAAA,QAAK;;;;;;;;;;;;;;;AAId;KARwB","debugId":null}}]
+}

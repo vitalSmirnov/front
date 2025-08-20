@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 5, "column": 0}, "map": {"version":3,"sources":["file:///D:/work/sickdays/front/src/app/auth/layout.tsx"],"sourcesContent":["import { Flex, Spin } from \"antd\"\r\nimport type { Metadata } from \"next\"\r\nimport { Suspense } from \"react\"\r\n\r\nexport const metadata: Metadata = {\r\n  title: \"Авторизация\",\r\n}\r\n\r\nexport default function RootLayout({\r\n  children,\r\n}: Readonly<{\r\n  children: React.ReactNode\r\n}>) {\r\n  return (\r\n    <div style={{ display: \"flex\", justifyContent: \"center\", alignItems: \"center\", height: \"100vh\" }}>\r\n      <Suspense fallback={<Spin />}>{children}</Suspense>\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;AAAA;AAEA;;;;AAEO,MAAM,WAAqB;IAChC,OAAO;AACT;AAEe,SAAS,WAAW,EACjC,QAAQ,EAGR;IACA,qBACE,8OAAC;QAAI,OAAO;YAAE,SAAS;YAAQ,gBAAgB;YAAU,YAAY;YAAU,QAAQ;QAAQ;kBAC7F,cAAA,8OAAC,qMAAA,CAAA,WAAQ;YAAC,wBAAU,8OAAC,mIAAA,CAAA,OAAI;;;;;sBAAM;;;;;;;;;;;AAGrC","debugId":null}}]
+}
