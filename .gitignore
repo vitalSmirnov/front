@@ -2,14 +2,14 @@
 
 # dependencies
 /node_modules
-
+.next/*
+.vscode/launch.json
 
 .env*
 
 # vercel
 .vercel
-/.next
-/.vscode
+
 
 # typescript
 *.tsbuildinfo
