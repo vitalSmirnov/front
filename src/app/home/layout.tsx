@@ -2,12 +2,14 @@ import { Avatar, Breadcrumb } from "antd"
 import { Suspense } from "react"
 import { TopBarMenu } from "../../widgets/Sidebar/ui"
 import { UserProfile } from "../../widgets/UserProfile/ui"
-import { RoutesEnum } from "../../shared/router/routesEnum"
-import { redirect } from "next/navigation"
+
 import { User } from "../../shared/entities/User/User"
 import { UserStoreProvider } from "../../shared/providers/userProvider"
-import { AxiosInstance } from "../../shared/api"
-import { getJwtTokenOnServer } from "../../shared/utils/getJwtTokenOnServer"
+
+import { AxiosServerInstance } from "../../shared/api/server"
+import { redirect } from "next/navigation"
+import { RoutesEnum } from "../../shared/router/routesEnum"
+import { TicketStoreProvider } from "../../shared/providers/ticketProvider"
 
 export default async function RootLayout({
   children,
@@ -17,14 +19,11 @@ export default async function RootLayout({
   let userInfo = {} as User
 
   try {
-    const res = await AxiosInstance.get<User>(`${process.env.NEXT_PUBLIC_API_REDIRECT_URL}/users/me/info`, {
-      headers: {
-        Authorization: `Bearer ${await getJwtTokenOnServer()}`,
-      },
-    })
+    const res = await AxiosServerInstance.get<User>(`/users/me/info`)
     userInfo = res.data
   } catch (error) {
-    console.error("Произошла ошибка:" + error)
+    console.error("Произошла ошибка при запросе информации о пользователе:" + error)
+    redirect(RoutesEnum.LOGIN)
   }
 
   return (
@@ -59,10 +58,6 @@ export default async function RootLayout({
           <UserProfile />
         </div>
         <div style={{ padding: "32px", boxSizing: "border-box", height: "100%" }}>
-          <Breadcrumb
-            items={[{ title: "Зявки" }]}
-            style={{ color: "white" }}
-          />
           <div
             style={{
               width: "100%",
@@ -73,7 +68,9 @@ export default async function RootLayout({
               borderRadius: "12px",
             }}
           >
-            <Suspense>{children}</Suspense>
+            <TicketStoreProvider>
+              <Suspense>{children}</Suspense>
+            </TicketStoreProvider>
           </div>
         </div>
       </UserStoreProvider>

@@ -22,7 +22,7 @@ export default async function TicketList({
       offset: offset ? Number(offset) : undefined,
     }).then(response => response.data)
   } catch (error) {
-    console.error("Error fetching ticket list:", error)
+    console.error("Ошибка при запросе серверного компонента с тикетами :", error)
   }
 
   return (

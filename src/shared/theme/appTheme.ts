@@ -28,6 +28,11 @@ export const appTheme: ThemeConfig = {
     Table: {
       colorBgContainer: "#fbfafaff",
     },
+    Typography: {
+      titleMarginTop: 0,
+      titleMarginBottom: 0,
+      margin: 0,
+    },
     Button: {
       controlHeight: 40,
       fontSize: 16,

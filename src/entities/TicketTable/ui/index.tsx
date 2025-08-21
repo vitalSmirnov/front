@@ -2,21 +2,25 @@
 
 import { Button, Empty, Flex, Table, Tooltip } from "antd"
 import type { ColumnsType } from "antd/es/table"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Ticket } from "../../../shared/entities/Ticket/Ticket"
-import { getTicketList } from "../api"
 import { useSearchParams } from "next/navigation"
 import { AppTag } from "../../../shared/ui/AppTag/ui"
 import { StatusEnum } from "../../../shared/entities/Ticket/StatusEnum"
 import { Prove } from "../../../shared/entities/Prove/Prove"
 import Image from "next/image"
-import { CheckCircleOutlined, DeleteOutlined, SmileOutlined } from "@ant-design/icons"
+import { CheckCircleOutlined, DeleteOutlined, RightOutlined, SmileOutlined } from "@ant-design/icons"
 import { GetTicketsResponse } from "../types"
 import dayjs from "dayjs"
 import { ReasonEnum } from "../../../shared/entities/Ticket/ReasonEnum"
-import { User } from "../../../shared/entities/User/User"
 import Link from "next/link"
 import { translateReason, translateStatus } from "../utils"
+import { useTicketStore } from "../../../shared/providers/ticketProvider"
+import { TicketControls } from "../../../widgets/TicketControls/ui"
+import { ApprooveTicket } from "../../../features/ApprooveTicket/ui"
+import { RejectTicket } from "../../../features/RejectTicket/ui"
+import { stat } from "fs"
+import { RoutesEnum } from "../../../shared/router/routesEnum"
 
 interface TicketTableProps {
   data: GetTicketsResponse
@@ -88,56 +92,42 @@ const columns: ColumnsType<Ticket> = [
   {
     title: "Действия",
     key: "actions",
+    render: (_: any, { id, status }: Ticket) => {
+      return (
+        <>
+          {status !== StatusEnum.APPROVED && <ApprooveTicket ticketId={id} />}
+          {status !== StatusEnum.REJECTED && <RejectTicket ticketId={id} />}
+        </>
+      )
+    },
+  },
+  {
+    key: "Transfer",
     render: (_: any, { id }: Ticket) => {
       return (
-        <Flex
-          justify='center'
-          gap={"12px"}
-        >
-          <Tooltip title='Быстрое подтверждение'>
-            <Button
-              onClick={() => console.log(`Approve ticket with id: ${id}`)}
-              type='primary'
-              size='small'
-            >
-              <CheckCircleOutlined />
-            </Button>
-          </Tooltip>
-          <Tooltip title='Быстрое отклонение'>
-            <Button
-              onClick={() => console.log(`Approve ticket with id: ${id}`)}
-              color='danger'
-              type='primary'
-              size='small'
-            >
-              <DeleteOutlined />
-            </Button>
-          </Tooltip>
-        </Flex>
+        <Link href={RoutesEnum.TICKETS + "/" + id}>
+          Перейти <RightOutlined />
+        </Link>
       )
     },
   },
 ]
 
 export const TicketTable: React.FC<TicketTableProps> = ({ data }) => {
-  const [dataSource, setDataSource] = React.useState<Ticket[]>(data.tickets || [])
-  console.log("TicketTable dataSource", dataSource)
-  const [isLoading, setIsLoading] = React.useState(false)
+  const { tickets, getTickets, setTickets } = useTicketStore(state => state)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const searchParams = useSearchParams()
 
   const fetchTickets = async () => {
     setIsLoading(true)
-    getTicketList({
+    getTickets({
       userName: searchParams.get("userName") || undefined,
       startDate: searchParams.get("startDate") || undefined,
       endDate: searchParams.get("endDate") || undefined,
-      limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : 100,
-      offset: searchParams.get("offset") ? Number(searchParams.get("offset")) : 0,
+      limit: 100,
+      offset: searchParams.get("page") ? 100 * (Number(searchParams.get("page")) - 1) : 0,
     })
-      .then(response => {
-        setDataSource(response.data.tickets)
-      })
       .catch(error => {
         console.error("Error fetching tickets:", error)
       })
@@ -146,6 +136,7 @@ export const TicketTable: React.FC<TicketTableProps> = ({ data }) => {
       })
   }
   useEffect(() => {
+    setTickets(data.tickets || [])
     fetchTickets()
   }, [
     searchParams.get("userName"),
@@ -159,9 +150,15 @@ export const TicketTable: React.FC<TicketTableProps> = ({ data }) => {
     <Table
       loading={isLoading}
       columns={columns}
-      dataSource={dataSource}
+      dataSource={tickets}
       rowKey='id'
-      pagination={false}
+      pagination={{
+        total: data.total,
+        onChange(page, _) {
+          const newParams = new URLSearchParams(searchParams.toString())
+          newParams.set("page", String(page))
+        },
+      }}
     />
   )
 }
