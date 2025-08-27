@@ -1,30 +1,23 @@
 "use client"
 
-import { Button, Empty, Flex, Table, Tooltip } from "antd"
+import { Empty, Table } from "antd"
 import type { ColumnsType } from "antd/es/table"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useLayoutEffect, useState } from "react"
 import { Ticket } from "../../../shared/entities/Ticket/Ticket"
 import { useSearchParams } from "next/navigation"
 import { AppTag } from "../../../shared/ui/AppTag/ui"
 import { StatusEnum } from "../../../shared/entities/Ticket/StatusEnum"
 import { Prove } from "../../../shared/entities/Prove/Prove"
 import Image from "next/image"
-import { CheckCircleOutlined, DeleteOutlined, RightOutlined, SmileOutlined } from "@ant-design/icons"
-import { GetTicketsResponse } from "../types"
+import { RightOutlined, SmileOutlined } from "@ant-design/icons"
 import dayjs from "dayjs"
 import { ReasonEnum } from "../../../shared/entities/Ticket/ReasonEnum"
 import Link from "next/link"
 import { translateReason, translateStatus } from "../utils"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
-import { TicketControls } from "../../../widgets/TicketControls/ui"
 import { ApprooveTicket } from "../../../features/ApprooveTicket/ui"
 import { RejectTicket } from "../../../features/RejectTicket/ui"
-import { stat } from "fs"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
-
-interface TicketTableProps {
-  data: GetTicketsResponse
-}
 
 const columns: ColumnsType<Ticket> = [
   {
@@ -113,8 +106,8 @@ const columns: ColumnsType<Ticket> = [
   },
 ]
 
-export const TicketTable: React.FC<TicketTableProps> = ({ data }) => {
-  const { tickets, getTickets, setTickets } = useTicketStore(state => state)
+export const TicketTable: React.FC = () => {
+  const { tickets, total, getTickets, setTickets } = useTicketStore(state => state)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const searchParams = useSearchParams()
@@ -128,6 +121,9 @@ export const TicketTable: React.FC<TicketTableProps> = ({ data }) => {
       limit: 100,
       offset: searchParams.get("page") ? 100 * (Number(searchParams.get("page")) - 1) : 0,
     })
+      .then(data => {
+        setTickets(data)
+      })
       .catch(error => {
         console.error("Error fetching tickets:", error)
       })
@@ -136,15 +132,8 @@ export const TicketTable: React.FC<TicketTableProps> = ({ data }) => {
       })
   }
   useEffect(() => {
-    setTickets(data.tickets || [])
     fetchTickets()
-  }, [
-    searchParams.get("userName"),
-    searchParams.get("limit"),
-    searchParams.get("offset"),
-    searchParams.get("endDate"),
-    searchParams.get("startDate"),
-  ])
+  }, [searchParams])
 
   return (
     <Table
@@ -153,7 +142,7 @@ export const TicketTable: React.FC<TicketTableProps> = ({ data }) => {
       dataSource={tickets}
       rowKey='id'
       pagination={{
-        total: data.total,
+        total: tickets.length,
         onChange(page, _) {
           const newParams = new URLSearchParams(searchParams.toString())
           newParams.set("page", String(page))

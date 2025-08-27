@@ -1,28 +1,21 @@
 "use client"
 import { Empty, Flex, Grid, List, Typography } from "antd"
-import { Ticket } from "../../../shared/entities/Ticket/Ticket"
 import Image from "next/image"
 import { TicketControls } from "../../../widgets/TicketControls/ui"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
-import { useEffect } from "react"
 import { AppTag } from "../../../shared/ui/AppTag/ui"
 import { StatusEnum } from "../../../shared/entities/Ticket/StatusEnum"
 import { translateReason, translateStatus } from "../../TicketTable/utils"
 import { SectionContainer } from "../../../shared/ui/SectionContainer"
-import Link from "next/link"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { AppLink } from "../../../shared/ui/AppLink"
+import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
+import dayjs from "dayjs"
+import { ProlongTicket } from "../../../features/ProlongTicket/ui"
 const { Title, Paragraph, Text } = Typography
 
-interface TicketProps {
-  fetchedTicket: Ticket
-}
-export const ConcreteTicket: React.FC<TicketProps> = ({ fetchedTicket }) => {
-  const { ticket, setTicket } = useTicketStore(state => state)
-
-  useEffect(() => {
-    setTicket(fetchedTicket)
-  }, [fetchedTicket])
+export const ConcreteTicket: React.FC = () => {
+  const { ticket } = useTicketStore(state => state)
 
   if (!ticket) {
     return <Empty description={"Тикет не найден"} />
@@ -37,7 +30,23 @@ export const ConcreteTicket: React.FC<TicketProps> = ({ fetchedTicket }) => {
           padding: "16px",
         }}
       >
-        <Title level={2}>{ticket.name}</Title>
+        <Title
+          style={{ margin: 0 }}
+          level={2}
+        >
+          {ticket.name}
+        </Title>
+        <Flex
+          gap={6}
+          align={"center"}
+          style={{ margin: "0 auto" }}
+        >
+          <Text strong>С</Text>
+          <AppTag color='gray'>{dayjs(ticket.startDate).format("DD-MM-YYYY")}</AppTag>
+          <Text strong>По</Text>
+          <AppTag color='gray'>{dayjs(ticket.endDate).format("DD-MM-YYYY")}</AppTag>
+          <ProlongTicket ticket={ticket} />
+        </Flex>
         <AppTag
           variant={
             ticket.status === StatusEnum.PENDING
@@ -59,27 +68,32 @@ export const ConcreteTicket: React.FC<TicketProps> = ({ fetchedTicket }) => {
       >
         <SectionContainer>
           <Title level={4}>Пользователь</Title>
+
           <Flex
             gap={8}
             align={"center"}
           >
             <AppLink href={RoutesEnum.TICKETS + `?userName=${ticket.user.name}`}>{ticket.user.name}</AppLink>
-            <AppTag
-              variant='primary'
-              style={{ marginLeft: "8px" }}
-            >
-              <AppLink href={RoutesEnum.TICKETS + `?course=${ticket.user.course.id}`}>
-                {ticket.user.course.name}
-              </AppLink>
-            </AppTag>
-            <AppTag
-              variant='primary'
-              style={{ marginLeft: "8px" }}
-            >
-              <AppLink href={RoutesEnum.TICKETS + `?group=${ticket.user.group.id}`}>
-                {ticket.user.group.identifier + ` Группа`}
-              </AppLink>
-            </AppTag>
+            {ticket.user.role === UserRoleEnum.STUDENT && (
+              <AppTag
+                variant='primary'
+                style={{ marginLeft: "8px" }}
+              >
+                <AppLink href={RoutesEnum.TICKETS + `?course=${ticket.user.course.id}`}>
+                  {ticket.user.course.name}
+                </AppLink>
+              </AppTag>
+            )}
+            {ticket.user.role === UserRoleEnum.STUDENT && (
+              <AppTag
+                variant='primary'
+                style={{ marginLeft: "8px" }}
+              >
+                <AppLink href={RoutesEnum.TICKETS + `?group=${ticket.user.group.id}`}>
+                  {ticket.user.group.identifier + ` Группа`}
+                </AppLink>
+              </AppTag>
+            )}
           </Flex>
         </SectionContainer>
 

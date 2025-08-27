@@ -4,4 +4,5 @@ export enum RoutesEnum {
   REGISTRATION = "/auth/register",
   TICKETS = "/home/tickets",
   REQUESTS = "/requests",
+  CREATE_TICKET = "/home/tickets/create",
 }

@@ -2,7 +2,6 @@ import { Suspense } from "react"
 
 import { Metadata } from "next"
 import LoadingPage from "../../../loading"
-import { TicketStoreProvider } from "../../../../shared/providers/ticketProvider"
 
 export const metadata: Metadata = {
   title: "Больничный",
@@ -14,9 +13,5 @@ export default async function ConcreteTicketLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
-    <Suspense fallback={<LoadingPage />}>
-      <TicketStoreProvider>{children}</TicketStoreProvider>
-    </Suspense>
-  )
+  return <Suspense fallback={<LoadingPage />}>{children}</Suspense>
 }

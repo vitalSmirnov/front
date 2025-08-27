@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { ConcreteTicket } from "../../../../entities/Ticket/ui"
 import { AxiosServerInstance } from "../../../../shared/api/server"
 import { Ticket } from "../../../../shared/entities/Ticket/Ticket"
+import { TicketStoreProvider } from "../../../../shared/providers/ticketProvider"
 
 export default async function TicketsPage({ params }: { params: { id: string } }) {
   let result: Ticket | undefined = undefined
@@ -18,9 +19,11 @@ export default async function TicketsPage({ params }: { params: { id: string } }
     notFound()
   }
 
+  console.log("Server ticket data:", result)
+
   return (
-    <>
-      <ConcreteTicket fetchedTicket={result} />
-    </>
+    <TicketStoreProvider initState={{ ticket: result, total: 0, tickets: [] }}>
+      <ConcreteTicket />
+    </TicketStoreProvider>
   )
 }

@@ -2,8 +2,9 @@
 
 # dependencies
 /node_modules
-.next/*
-.vscode/launch.json
+.next
+.vscode
+
 
 .env*
 

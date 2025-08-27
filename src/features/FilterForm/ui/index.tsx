@@ -1,10 +1,13 @@
 "use client"
 
 import { useForm } from "antd/es/form/Form"
-import { DatePicker, Flex, Form, Input } from "antd"
+import { Button, DatePicker, Flex, Form, Input } from "antd"
 import { setParams, toIso } from "../utils"
 import { useSearchParams } from "next/navigation"
 import dayjs from "dayjs"
+import Link from "next/link"
+import { RoutesEnum } from "../../../shared/router/routesEnum"
+import { RightOutlined } from "@ant-design/icons"
 
 export function FilterForm() {
   const p = useSearchParams()
@@ -52,6 +55,12 @@ export function FilterForm() {
         >
           <DatePicker placeholder='Конец' />
         </Form.Item>
+        <Button
+          type='link'
+          icon={<RightOutlined />}
+        >
+          <Link href={RoutesEnum.CREATE_TICKET}>Создать заявку</Link>
+        </Button>
       </Flex>
     </Form>
   )
