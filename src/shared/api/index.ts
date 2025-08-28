@@ -1,13 +1,5 @@
 import axios from "axios"
 
-// Read a cookie value by name (browser-only)
-const getCookie = (name: string): string | undefined => {
-  if (typeof document === "undefined") return undefined
-  const match = document.cookie.split("; ").find(row => row.startsWith(`${name}=`))
-  const value = match?.split("=")[1]
-  return value ? decodeURIComponent(value) : undefined
-}
-
 export const AxiosInstance = axios.create({
   baseURL: "/api",
   withCredentials: true,
@@ -39,10 +31,13 @@ AxiosInstance.interceptors.response.use(
     ) {
       originalRequest._retry = true
       try {
-        // Call refresh without body; let server read refresh token from HttpOnly cookie
-        const refreshRes = await axios.post(`/auth/refresh`, undefined, {
-          withCredentials: true,
-        })
+        const refreshRes = await axios.post(
+          `/auth/refresh`,
+          {},
+          {
+            withCredentials: true,
+          }
+        )
         const newToken = refreshRes.data.accessToken
 
         if (typeof sessionStorage !== "undefined") {
