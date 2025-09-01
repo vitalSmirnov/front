@@ -3,6 +3,7 @@
 import { Button, Tooltip } from "antd"
 import React from "react"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
+import { StopOutlined } from "@ant-design/icons"
 
 interface RejectTicketProps {
   ticketId: string
@@ -24,13 +25,13 @@ export const RejectTicket: React.FC<RejectTicketProps> = ({ ticketId }) => {
     <Tooltip
       title='Отклонить заявку'
       placement='top'
-      color='#f6ffed'
+      color='#000000ff'
     >
       <Button
         danger
         onClick={handleApproove}
       >
-        Отклонить
+        <StopOutlined />
       </Button>
     </Tooltip>
   )

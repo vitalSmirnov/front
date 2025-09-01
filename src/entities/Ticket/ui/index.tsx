@@ -11,7 +11,6 @@ import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { AppLink } from "../../../shared/ui/AppLink"
 import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
 import dayjs from "dayjs"
-import { ProlongTicket } from "../../../features/ProlongTicket/ui"
 const { Title, Paragraph, Text } = Typography
 
 export const ConcreteTicket: React.FC = () => {
@@ -22,7 +21,7 @@ export const ConcreteTicket: React.FC = () => {
   }
 
   return (
-    <div>
+    <div style={{ display: "grid", gridTemplateRows: "auto 1fr", height: "100%" }}>
       <Flex
         gap={16}
         align={"center"}
@@ -45,7 +44,6 @@ export const ConcreteTicket: React.FC = () => {
           <AppTag color='gray'>{dayjs(ticket.startDate).format("DD-MM-YYYY")}</AppTag>
           <Text strong>По</Text>
           <AppTag color='gray'>{dayjs(ticket.endDate).format("DD-MM-YYYY")}</AppTag>
-          <ProlongTicket ticket={ticket} />
         </Flex>
         <AppTag
           variant={
@@ -58,11 +56,9 @@ export const ConcreteTicket: React.FC = () => {
         >
           {translateStatus[ticket.status]}
         </AppTag>
-        <div style={{ marginLeft: "auto" }}>
-          <TicketControls />
-        </div>
       </Flex>
       <Flex
+        style={{ height: "100%" }}
         gap={16}
         wrap={"wrap"}
       >
@@ -74,7 +70,7 @@ export const ConcreteTicket: React.FC = () => {
             align={"center"}
           >
             <AppLink href={RoutesEnum.TICKETS + `?userName=${ticket.user.name}`}>{ticket.user.name}</AppLink>
-            {ticket.user.role === UserRoleEnum.STUDENT && (
+            {ticket.user.role.includes(UserRoleEnum.ADMIN) && ticket.user.course && (
               <AppTag
                 variant='primary'
                 style={{ marginLeft: "8px" }}
@@ -84,7 +80,7 @@ export const ConcreteTicket: React.FC = () => {
                 </AppLink>
               </AppTag>
             )}
-            {ticket.user.role === UserRoleEnum.STUDENT && (
+            {ticket.user.role.includes(UserRoleEnum.ADMIN) && ticket.user.group && (
               <AppTag
                 variant='primary'
                 style={{ marginLeft: "8px" }}
@@ -126,6 +122,7 @@ export const ConcreteTicket: React.FC = () => {
             )}
           </List>
         </SectionContainer>
+        <TicketControls ticket={ticket} />
       </Flex>
     </div>
   )

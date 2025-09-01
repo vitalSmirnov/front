@@ -33,7 +33,7 @@ export const UserProfile = () => {
         src={null}
       />
       <Drawer
-        title='Профиль'
+        title={`Профиль ${user!.name}`}
         closable={{ "aria-label": "Close Button" }}
         onClose={onClose}
         open={open}
@@ -44,23 +44,25 @@ export const UserProfile = () => {
           align='center'
           gap={16}
         >
-          <Text>{user!.name}</Text>
-          <AppTag
-            variant={
-              user!.role === UserRoleEnum.ADMIN ? "primary" : user?.role === UserRoleEnum.PROFESSOR ? "success" : "info"
-            }
-          >
-            {RoleComparer[user!.role]}
-          </AppTag>
+          {user!.role.map(role => (
+            <AppTag
+              key={role}
+              variant={
+                role === UserRoleEnum.ADMIN ? "primary" : role.includes(UserRoleEnum.PROFESSOR) ? "success" : "info"
+              }
+            >
+              {RoleComparer[role]}
+            </AppTag>
+          ))}
         </Flex>
         <Descriptions
           column={2}
           style={{ marginTop: 16 }}
         >
-          {user?.role === UserRoleEnum.STUDENT && (
+          {user?.role.includes(UserRoleEnum.STUDENT) && (
             <>
-              <DescriptionsItem label={"Курс"}>{user!.course}</DescriptionsItem>
-              <DescriptionsItem label={"Группа"}>{user!.group}</DescriptionsItem>
+              <DescriptionsItem label={"Курс"}>{user?.course?.identifier || ""}</DescriptionsItem>
+              <DescriptionsItem label={"Группа"}>{user?.group?.identifier || ""}</DescriptionsItem>
             </>
           )}
 

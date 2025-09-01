@@ -1,13 +1,14 @@
 "use client"
 
 import { useForm } from "antd/es/form/Form"
-import { Button, DatePicker, Flex, Form, Input } from "antd"
+import { Button, DatePicker, Flex, Form, Input, Select } from "antd"
 import { setParams, toIso } from "../utils"
 import { useSearchParams } from "next/navigation"
 import dayjs from "dayjs"
 import Link from "next/link"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { RightOutlined } from "@ant-design/icons"
+import { StatusEnum } from "../../../shared/entities/Ticket/StatusEnum"
 
 export function FilterForm() {
   const p = useSearchParams()
@@ -30,6 +31,7 @@ export function FilterForm() {
         userName: p.get("userName") || "",
         startDate: p.get("startDate") ? dayjs(p.get("startDate")!) : undefined,
         endDate: p.get("endDate") ? dayjs(p.get("endDate")!) : undefined,
+        status: p.get("status") ? dayjs(p.get("status")!) : undefined,
       }}
     >
       <Flex
@@ -55,12 +57,19 @@ export function FilterForm() {
         >
           <DatePicker placeholder='Конец' />
         </Form.Item>
-        <Button
-          type='link'
-          icon={<RightOutlined />}
+        <Form.Item
+          name='status'
+          label='Статус'
         >
-          <Link href={RoutesEnum.CREATE_TICKET}>Создать заявку</Link>
-        </Button>
+          <Select
+            options={[
+              { label: "Все", value: "" },
+              { label: "Ожидает", value: StatusEnum.PENDING },
+              { label: "Одобрено", value: StatusEnum.APPROVED },
+              { label: "Отклонено", value: StatusEnum.REJECTED },
+            ]}
+          />
+        </Form.Item>
       </Flex>
     </Form>
   )

@@ -9,5 +9,5 @@ export interface User {
   course: Course
   group: Group
   tickets: Ticket[]
-  role: UserRoleEnum
+  role: UserRoleEnum[]
 }

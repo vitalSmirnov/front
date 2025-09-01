@@ -1,4 +1,3 @@
-import { Avatar, Breadcrumb } from "antd"
 import { Suspense } from "react"
 import { TopBarMenu } from "../../widgets/Sidebar/ui"
 import { UserProfile } from "../../widgets/UserProfile/ui"

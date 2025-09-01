@@ -27,7 +27,7 @@ export const LoginUserUI = () => {
         router.push(RoutesEnum.HOME)
       })
       .catch(error => {
-        message.error(error.message || "Ошибка входа, попробуйте позже")
+        console.error("Login error:", error)
       })
       .finally(() => {
         setLoading(false)

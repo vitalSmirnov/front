@@ -3,23 +3,22 @@
 import { Button, Form, Tooltip, Typography, Upload } from "antd"
 import React from "react"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
-import { CreateTicketInfoPayload } from "../types"
 import { useRouter } from "next/navigation"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
-import { ReasonEnum } from "../../../shared/entities/Ticket/ReasonEnum"
+import { UpdateTicketInfoPayload } from "../../ProlongTicket/types"
 import dayjs from "dayjs"
 import { UploadOutlined } from "@ant-design/icons"
 import { TicketForm } from "../../../processes/TicketForm/ui"
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
-export const CreateTicket: React.FC = () => {
+export const EditTicket: React.FC = () => {
   const router = useRouter()
-  const { createTicket } = useTicketStore(state => state)
+  const { ticket, updateTicket } = useTicketStore(state => state)
   const [form] = Form.useForm()
 
-  const onFinish = async (values: CreateTicketInfoPayload) => {
-    createTicket(values)
+  const onFinish = async (values: UpdateTicketInfoPayload) => {
+    updateTicket(values)
       .then(() => {
         router.push(RoutesEnum.TICKETS)
         form.resetFields()
@@ -28,24 +27,36 @@ export const CreateTicket: React.FC = () => {
         console.error("Error creating ticket:", error)
       })
   }
+
   return (
     <>
-      <Title
-        level={2}
-        style={{ marginBottom: 24 }}
+      <Tooltip
+        color='white'
+        title={
+          <Text>
+            ID заявки: <Text copyable>{ticket?.id}</Text>
+          </Text>
+        }
       >
-        {`Создание заявки`}
-      </Title>
-
+        <Title
+          level={2}
+          style={{ marginBottom: 24 }}
+        >
+          {`Редактирование заявки: ${ticket?.name}`}
+        </Title>
+      </Tooltip>
       <TicketForm
-        name='create-ticket-form'
+        abortText='Отмена'
+        abortLink={RoutesEnum.TICKETS + `/${ticket?.id}`}
+        submitText='Редактировать заявку'
+        name='edit-ticket-form'
+        layout='vertical'
         onFinish={onFinish}
         form={form}
         initialValues={{
-          name: "",
-          startDate: dayjs(),
-          reason: ReasonEnum.SICKDAY,
-          description: "",
+          ...ticket,
+          startDate: ticket ? dayjs(ticket.startDate) : undefined,
+          endDate: ticket ? dayjs(ticket.endDate) : undefined,
         }}
       >
         <Form.Item

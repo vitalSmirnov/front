@@ -4,9 +4,16 @@ import { Button, Tooltip } from "antd"
 import React, { useState } from "react"
 import { TableOutlined } from "@ant-design/icons"
 import { exportTableFile } from "../api"
+import useToken from "antd/es/theme/useToken"
+import { useUserStore } from "../../../shared/providers/userProvider"
+import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
 
 export const GetTable: React.FC = () => {
   const [loading, setLoading] = useState(false)
+  const { user } = useUserStore(state => state)
+  const [_, token] = useToken()
+
+  if (!user!.role.includes(UserRoleEnum.ADMIN)) return <></>
 
   const handleDownload = async () => {
     setLoading(true)
@@ -51,6 +58,7 @@ export const GetTable: React.FC = () => {
   return (
     <Tooltip title='Download table file'>
       <Button
+        style={{ color: token.colorSuccess, borderColor: token.colorSuccess }}
         onClick={handleDownload}
         disabled={loading}
         loading={loading}

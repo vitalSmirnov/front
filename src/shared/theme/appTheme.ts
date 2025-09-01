@@ -6,9 +6,10 @@ export const appTheme: ThemeConfig = {
     fontSize: 16,
     colorPrimary: "#4880FF",
     colorBgBase: "#f2f2f2",
+    colorFillSecondary: "#8e8e8eff",
     colorError: "#FF7A30",
     colorSuccess: "#00BFA5",
-    colorInfo: "#FCEF91",
+    colorInfo: "#e7d336ff",
     colorLink: "#4880FF",
   },
   components: {
@@ -45,13 +46,15 @@ export const appTheme: ThemeConfig = {
 
       colorPrimaryActive: "#000000",
       colorPrimaryHover: "rgba(39, 39, 39, 1)",
-      colorPrimaryBg: "#f2f2f2",
+      colorPrimaryBg: "white",
 
       defaultBg: "white",
-      defaultActiveBg: "#f2f2f2",
+      defaultActiveBg: "white",
       defaultColor: "#000000",
       defaultBorderColor: "#000000",
       defaultActiveBorderColor: "#000000",
+
+      colorErrorBg: "white",
     },
   },
 }

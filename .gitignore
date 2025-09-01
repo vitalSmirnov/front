@@ -2,8 +2,9 @@
 
 # dependencies
 /node_modules
-.next
 .vscode
+/.next/
+/out/
 
 
 .env*

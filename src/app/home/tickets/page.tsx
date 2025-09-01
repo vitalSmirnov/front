@@ -24,7 +24,6 @@ export default async function TicketsPage(params: {
   } catch (error) {
     console.error("Ошибка при запросе серверного компонента с тикетами :", error)
   }
-  console.log("Server tickets data:", initialData)
   return (
     <TicketStoreProvider initState={{ tickets: initialData.tickets, total: initialData.total, ticket: null }}>
       <TicketList />
