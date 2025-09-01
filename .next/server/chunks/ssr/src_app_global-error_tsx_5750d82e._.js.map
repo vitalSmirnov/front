@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 5, "column": 0}, "map": {"version":3,"sources":["file:///D:/work/sickdays/front/src/app/global-error.tsx"],"sourcesContent":["export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {\r\n  return (\r\n    <html>\r\n      <body>\r\n        \r\n      </body>\r\n    </html>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;AAAe,SAAS,YAAY,EAAE,KAAK,EAAE,KAAK,EAA6D;IAC7G,qBACE,8OAAC;kBACC,cAAA,8OAAC;;;;;;;;;;AAKP","debugId":null}}]
-}

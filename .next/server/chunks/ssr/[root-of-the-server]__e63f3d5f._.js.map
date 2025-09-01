@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///D:/work/sickdays/front/src/app/page.tsx"],"sourcesContent":["export default async function Home() {\n  const token = getJwtTokenOnServer()\n\n  if (!token) {\n    redirect(RoutesEnum.LOGIN)\n  }\n\n  redirect(RoutesEnum.HOME)\n}\n"],"names":[],"mappings":";;;AAAe,eAAe;IAC5B,MAAM,QAAQ;IAEd,IAAI,CAAC,OAAO;QACV,SAAS,WAAW,KAAK;IAC3B;IAEA,SAAS,WAAW,IAAI;AAC1B","debugId":null}}]
-}
