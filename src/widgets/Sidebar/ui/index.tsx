@@ -8,7 +8,7 @@ import { MenuItems } from "../types/items"
 export const TopBarMenu = () => {
   const { user } = useUserStore(state => state)
 
-  let MenuItemsRoles = user?.role === UserRoleEnum.ADMIN ? MenuItems : MenuItems.slice(0, 0)
+  let MenuItemsRoles = user?.role.includes(UserRoleEnum.ADMIN) ? MenuItems : MenuItems.slice(0, 0)
 
   return (
     <Menu

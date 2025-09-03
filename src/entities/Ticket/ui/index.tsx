@@ -1,5 +1,5 @@
 "use client"
-import { Empty, Flex, Grid, List, Typography } from "antd"
+import { Button, Empty, Flex, Grid, List, Tooltip, Typography } from "antd"
 import Image from "next/image"
 import { TicketControls } from "../../../widgets/TicketControls/ui"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
@@ -10,7 +10,10 @@ import { SectionContainer } from "../../../shared/ui/SectionContainer"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { AppLink } from "../../../shared/ui/AppLink"
 import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
+import { EditOutlined } from "@ant-design/icons"
 import dayjs from "dayjs"
+import Link from "next/link"
+import { AppImage } from "../../../shared/ui/Image"
 const { Title, Paragraph, Text } = Typography
 
 export const ConcreteTicket: React.FC = () => {
@@ -56,6 +59,13 @@ export const ConcreteTicket: React.FC = () => {
         >
           {translateStatus[ticket.status]}
         </AppTag>
+        <Tooltip title='Редактировать'>
+          <Button type='link'>
+            <Link href={RoutesEnum.TICKETS + `/${ticket.id}/edit`}>
+              <EditOutlined />
+            </Link>
+          </Button>
+        </Tooltip>
       </Flex>
       <Flex
         style={{ height: "100%" }}
@@ -109,9 +119,9 @@ export const ConcreteTicket: React.FC = () => {
               ticket.prooves.map(item => {
                 return (
                   <List.Item key={item.id}>
-                    <Image
-                      src={item.path}
-                      alt={"Приложение"}
+                    <AppImage
+                      key={item.id}
+                      path={item.path}
                     />
                     {item.name}
                   </List.Item>

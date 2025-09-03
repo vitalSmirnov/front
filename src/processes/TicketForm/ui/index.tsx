@@ -6,6 +6,7 @@ import { RoutesEnum } from "../../../shared/router/routesEnum"
 import Router from "next/router"
 import { translateReason } from "../../../entities/TicketTable/utils"
 import { ReasonEnum } from "../../../shared/entities/Ticket/ReasonEnum"
+import Link from "next/link"
 
 interface TicketFormProps extends Omit<FormProps, "children">, PropsWithChildren {
   abortText?: string
@@ -81,7 +82,9 @@ export const TicketForm: React.FC<TicketFormProps> = ({
           >
             {submitText}
           </Button>
-          <Button onClick={() => Router.push(abortLink)}>{abortText}</Button>
+          <Button>
+            <Link href={abortLink}>{abortText}</Link>
+          </Button>
         </Form.Item>
       </Form>
     </div>

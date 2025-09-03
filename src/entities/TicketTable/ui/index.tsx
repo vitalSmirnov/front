@@ -18,6 +18,7 @@ import { useTicketStore } from "../../../shared/providers/ticketProvider"
 import { ApprooveTicket } from "../../../features/ApprooveTicket/ui"
 import { RejectTicket } from "../../../features/RejectTicket/ui"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
+import { AppImage } from "../../../shared/ui/Image"
 
 const columns: ColumnsType<Ticket> = [
   {
@@ -63,13 +64,9 @@ const columns: ColumnsType<Ticket> = [
       <>
         {prooves.length ? (
           prooves.map(item => (
-            <Image
+            <AppImage
               key={item.id}
-              src={item.path}
-              alt='attachment'
-              width={50}
-              height={50}
-              style={{ objectFit: "cover" }}
+              path={item.path}
             />
           ))
         ) : (

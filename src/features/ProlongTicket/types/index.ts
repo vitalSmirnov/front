@@ -8,7 +8,7 @@ export interface UpdateTicketInfoPayload {
     endDate?: Date
     name?: string
     reason?: ReasonEnum
-    prooves?: Prove[]
+    prooves?: string[]
     description?: string
   }
 }

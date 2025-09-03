@@ -8,18 +8,18 @@ export default async function RootLayout({
   children,
   params,
 }: Readonly<{
-  params: { startDate?: string; endDate?: string; userName?: string; limit?: string; offset?: string }
+  params: { startDate?: string; endDate?: string; userName?: string; page?: string }
   children: React.ReactNode
 }>) {
+  const { userName, startDate, endDate, page } = await params
   let initialData: { tickets: Ticket[]; total: number } = { tickets: [], total: 0 }
   try {
     const res = await getServerTicketList({
-      ...params,
-      userName: params.userName || undefined,
-      startDate: params.startDate ? new Date(params.startDate) : undefined,
-      endDate: params.endDate ? new Date(params.endDate) : undefined,
-      limit: params.limit ? Number(params.limit) : undefined,
-      offset: params.offset ? Number(params.offset) : undefined,
+      userName: userName || undefined,
+      startDate: startDate ? new Date(startDate) : undefined,
+      endDate: endDate ? new Date(endDate) : undefined,
+      limit: 100,
+      offset: page ? Number(page) * 100 : undefined,
     })
     initialData = res.data
   } catch (error) {
