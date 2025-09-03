@@ -8,6 +8,7 @@ export interface GetTicketsPayload {
   endDate?: Date
   limit?: number
   offset?: number
+  group?: string
 }
 export interface GetTicketsResponse {
   tickets: Ticket[]

@@ -13,7 +13,7 @@ export const GroupSelect: React.FC<GroupSelectProps> = ({ courseId, ...props }) 
   const [data, setData] = useState<GroupsResponse[]>([])
   const [identifier, setIdentifier] = useState<string>()
   const defferedIdentifier = useDeferredValue(identifier)
-  const [filters, setFilters] = useState<{ offset: number; limit: number; }>({
+  const [filters, setFilters] = useState<{ offset: number; limit: number }>({
     limit: 100,
     offset: 0,
   })
@@ -25,10 +25,10 @@ export const GroupSelect: React.FC<GroupSelectProps> = ({ courseId, ...props }) 
       limit: filters.limit,
       offset: filters.offset,
       identifier: defferedIdentifier,
-      courseId: courseId, 
+      courseId: courseId,
     })
       .then(response => {
-        setData(response)
+        setData(response.data)
       })
       .catch(error => {
         console.error("Error fetching groups:", error)
@@ -44,7 +44,7 @@ export const GroupSelect: React.FC<GroupSelectProps> = ({ courseId, ...props }) 
 
   return (
     <Select
-    {...props}
+      {...props}
       loading={isLoading}
       showSearch
       searchValue={identifier}

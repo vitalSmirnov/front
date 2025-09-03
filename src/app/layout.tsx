@@ -22,8 +22,8 @@ export default function RootLayout({
       <html lang='en'>
         <body>
           <AntdRegistry>{children}</AntdRegistry>
+          <ToastContainer />
         </body>
-        <ToastContainer />
       </html>
     </ConfigProvider>
   )

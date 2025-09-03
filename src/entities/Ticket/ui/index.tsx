@@ -118,8 +118,13 @@ export const ConcreteTicket: React.FC = () => {
             {ticket.prooves.length ? (
               ticket.prooves.map(item => {
                 return (
-                  <List.Item key={item.id}>
+                  <List.Item
+                    key={item.id}
+                    style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+                  >
                     <AppImage
+                      width={100}
+                      height={100}
                       key={item.id}
                       path={item.path}
                     />

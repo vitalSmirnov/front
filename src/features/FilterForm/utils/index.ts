@@ -1,9 +1,16 @@
 import dayjs from "dayjs"
 import { GetTicketsPayload } from "../../../widgets/TicketList/types"
 
-export function setParams({ userName, startDate, endDate, status }: Omit<GetTicketsPayload, "limit" | "offset">) {
+export function setParams({
+  userName,
+  startDate,
+  endDate,
+  status,
+  group,
+}: Omit<GetTicketsPayload, "limit" | "offset">) {
   const params = new URLSearchParams()
   if (userName) params.set("userName", userName)
+  if (group) params.set("group", group)
   if (startDate) params.set("startDate", startDate.toString())
   if (endDate) params.set("endDate", endDate.toString())
   if (status) params.set("status", status)

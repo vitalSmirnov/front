@@ -5,6 +5,8 @@ export interface GroupsPayload {
   identifier?: string
 }
 export interface GroupsResponse {
-  id: string
-  identifier: string
+  data: {
+    id: string
+    identifier: string
+  }[]
 }

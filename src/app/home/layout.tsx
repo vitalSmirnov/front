@@ -50,7 +50,7 @@ export default async function RootLayout({
             justifyContent: "space-between",
             gap: "16px",
             backgroundColor: "white",
-            padding: "0 16px",
+            padding: "0 16px 0 0",
           }}
         >
           <TopBarMenu />

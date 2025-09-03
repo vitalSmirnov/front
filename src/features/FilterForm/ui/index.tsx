@@ -1,18 +1,26 @@
 "use client"
 
 import { useForm } from "antd/es/form/Form"
-import { Button, DatePicker, Flex, Form, Input, Select } from "antd"
+import { DatePicker, Flex, Form, Input, Select, Typography } from "antd"
 import { setParams, toIso } from "../utils"
 import { useSearchParams } from "next/navigation"
 import dayjs from "dayjs"
-import Link from "next/link"
-import { RoutesEnum } from "../../../shared/router/routesEnum"
-import { RightOutlined } from "@ant-design/icons"
 import { StatusEnum } from "../../../shared/entities/Ticket/StatusEnum"
+import { useUserStore } from "../../../shared/providers/userProvider"
+import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
+import { GetTicketsPayload } from "../../../entities/TicketTable/types"
+import { CheckCircleTwoTone, Loading3QuartersOutlined, CloseCircleTwoTone } from "@ant-design/icons"
+import useToken from "antd/es/theme/useToken"
+import { SuggestGroupSelect } from "../../SuggestGroups/ui"
+import { SuggestUsersSelect } from "../../SuggestUsers/ui"
+
+const { Text } = Typography
 
 export function FilterForm() {
+  const [_, token] = useToken()
+  const { user } = useUserStore(state => state)
   const p = useSearchParams()
-  const [form] = useForm()
+  const [form] = useForm<Omit<GetTicketsPayload, "limit" | "offset">>()
 
   const handleChange = (_: any, allValues: any) => {
     setParams({
@@ -21,6 +29,8 @@ export function FilterForm() {
       endDate: toIso(allValues?.endDate),
     })
   }
+
+  const isAdmin = user!.role.includes(UserRoleEnum.ADMIN) || user!.role.includes(UserRoleEnum.PROFESSOR)
 
   return (
     <Form
@@ -39,12 +49,22 @@ export function FilterForm() {
         gap={16}
         wrap='wrap'
       >
-        <Form.Item
-          name='userName'
-          label='ФИО'
-        >
-          <Input placeholder='ФИО' />
-        </Form.Item>
+        {isAdmin && (
+          <>
+            <Form.Item
+              name='userName'
+              label='ФИО'
+            >
+              <SuggestUsersSelect placeholder='ФИО' />
+            </Form.Item>
+            <Form.Item
+              name='group'
+              label='Группа'
+            >
+              <SuggestGroupSelect />
+            </Form.Item>
+          </>
+        )}
         <Form.Item
           name='startDate'
           label='Начало'
@@ -62,11 +82,36 @@ export function FilterForm() {
           label='Статус'
         >
           <Select
+            style={{ minWidth: 200 }}
             options={[
               { label: "Все", value: "" },
-              { label: "Ожидает", value: StatusEnum.PENDING },
-              { label: "Одобрено", value: StatusEnum.APPROVED },
-              { label: "Отклонено", value: StatusEnum.REJECTED },
+              {
+                label: (
+                  <Text style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    <Loading3QuartersOutlined />
+                    На рассмотрении
+                  </Text>
+                ),
+                value: StatusEnum.PENDING,
+              },
+              {
+                label: (
+                  <Text style={{ color: token.colorSuccess, display: "flex", alignItems: "center", gap: 4 }}>
+                    <CheckCircleTwoTone twoToneColor={token.colorSuccess} />
+                    Одобрено
+                  </Text>
+                ),
+                value: StatusEnum.APPROVED,
+              },
+              {
+                label: (
+                  <Text style={{ color: token.colorError, display: "flex", alignItems: "center", gap: 4 }}>
+                    <CloseCircleTwoTone twoToneColor={token.colorError} />
+                    Отклонено
+                  </Text>
+                ),
+                value: StatusEnum.REJECTED,
+              },
             ]}
           />
         </Form.Item>

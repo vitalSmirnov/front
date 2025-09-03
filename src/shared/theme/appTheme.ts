@@ -56,5 +56,13 @@ export const appTheme: ThemeConfig = {
 
       colorErrorBg: "white",
     },
+    DatePicker: {
+      controlHeight: 40,
+      colorBgContainer: "white",
+    },
+    Select: {
+      controlHeight: 40,
+      colorBgContainer: "white",
+    },
   },
 }

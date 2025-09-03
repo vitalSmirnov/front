@@ -8,16 +8,17 @@ export default async function RootLayout({
   children,
   params,
 }: Readonly<{
-  params: { startDate?: string; endDate?: string; userName?: string; page?: string }
+  params: { startDate?: string; endDate?: string; userName?: string; page?: string; group?: string }
   children: React.ReactNode
 }>) {
-  const { userName, startDate, endDate, page } = await params
+  const { userName, startDate, endDate, page, group } = await params
   let initialData: { tickets: Ticket[]; total: number } = { tickets: [], total: 0 }
   try {
     const res = await getServerTicketList({
       userName: userName || undefined,
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
+      group: group || undefined,
       limit: 100,
       offset: page ? Number(page) * 100 : undefined,
     })
