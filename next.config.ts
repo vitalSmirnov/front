@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
     ],
     domains: ["localhost"],
   },
+  devIndicators: false,
 }
 
 export default nextConfig

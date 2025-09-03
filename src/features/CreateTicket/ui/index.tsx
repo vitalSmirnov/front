@@ -3,7 +3,7 @@
 import { Button, Form, Typography, Upload, UploadFile } from "antd"
 import React, { useState } from "react"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
-import { CreateTicketInfoPayload } from "../types"
+import { CreateTicketInfoForm } from "../types"
 import { useRouter } from "next/navigation"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { ReasonEnum } from "../../../shared/entities/Ticket/ReasonEnum"
@@ -16,9 +16,8 @@ const { Title } = Typography
 export const CreateTicket: React.FC = () => {
   const router = useRouter()
   const { createTicket } = useTicketStore(state => state)
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<CreateTicketInfoForm>()
 
-  // --- new state to control uploaded files and keep Upload/Form in sync
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const handleUploadChange = ({ fileList: newList }: { fileList: UploadFile[] }) => {
@@ -26,8 +25,14 @@ export const CreateTicket: React.FC = () => {
     form.setFieldsValue({ prooves: { fileList: newList } })
   }
 
-  const onFinish = async (values: CreateTicketInfoPayload) => {
-    createTicket(values)
+  const onFinish = async (values: CreateTicketInfoForm) => {
+    const prooves = values.prooves?.fileList || []
+
+    const proovesPaths: string[] = prooves.map(file => {
+      return file?.response?.file?.path ?? []
+    })
+
+    createTicket({ ...values, prooves: proovesPaths || [] })
       .then(() => {
         router.push(RoutesEnum.TICKETS)
         form.resetFields()

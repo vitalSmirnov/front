@@ -14,7 +14,6 @@ AxiosServerInstance.interceptors.request.use(async config => {
   // Read JWT from cookies on the server
   const token = await getJwtTokenOnServer()
   if (token && config.headers) config.headers.Authorization = `Bearer ${token}`
-
   return config
 })
 

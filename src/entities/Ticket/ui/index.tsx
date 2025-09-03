@@ -1,6 +1,5 @@
 "use client"
-import { Button, Empty, Flex, Grid, List, Tooltip, Typography } from "antd"
-import Image from "next/image"
+import { Button, Empty, Flex, List, Tooltip, Typography } from "antd"
 import { TicketControls } from "../../../widgets/TicketControls/ui"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
 import { AppTag } from "../../../shared/ui/AppTag/ui"
@@ -14,13 +13,18 @@ import { EditOutlined } from "@ant-design/icons"
 import dayjs from "dayjs"
 import Link from "next/link"
 import { AppImage } from "../../../shared/ui/Image"
+import { useUserStore } from "../../../shared/providers/userProvider"
+import { notFound } from "next/navigation"
 const { Title, Paragraph, Text } = Typography
 
 export const ConcreteTicket: React.FC = () => {
   const { ticket } = useTicketStore(state => state)
+  const { user } = useUserStore(state => state)
+
+  const isAbleToEdit = user!.role.includes(UserRoleEnum.ADMIN) || user?.id === ticket?.user.id
 
   if (!ticket) {
-    return <Empty description={"Тикет не найден"} />
+    return notFound()
   }
 
   return (
@@ -59,13 +63,15 @@ export const ConcreteTicket: React.FC = () => {
         >
           {translateStatus[ticket.status]}
         </AppTag>
-        <Tooltip title='Редактировать'>
-          <Button type='link'>
-            <Link href={RoutesEnum.TICKETS + `/${ticket.id}/edit`}>
-              <EditOutlined />
-            </Link>
-          </Button>
-        </Tooltip>
+        {isAbleToEdit && (
+          <Tooltip title='Редактировать'>
+            <Button type='link'>
+              <Link href={RoutesEnum.TICKETS + `/${ticket.id}/edit`}>
+                <EditOutlined />
+              </Link>
+            </Button>
+          </Tooltip>
+        )}
       </Flex>
       <Flex
         style={{ height: "100%" }}
@@ -137,7 +143,7 @@ export const ConcreteTicket: React.FC = () => {
             )}
           </List>
         </SectionContainer>
-        <TicketControls ticket={ticket} />
+        {user!.role.includes(UserRoleEnum.ADMIN) && <TicketControls ticket={ticket} />}
       </Flex>
     </div>
   )

@@ -10,6 +10,8 @@ import { UploadOutlined } from "@ant-design/icons"
 import { TicketForm } from "../../../processes/TicketForm/ui"
 import { UpdateTicketInfoForm } from "../types"
 import type { UploadFile } from "antd/es/upload/interface"
+import { useUserStore } from "../../../shared/providers/userProvider"
+import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
 
 const mediaPath = process.env.NEXT_PUBLIC_MEDIA_URL
 const { Title, Text } = Typography
@@ -17,9 +19,10 @@ const { Title, Text } = Typography
 export const EditTicket: React.FC = () => {
   const router = useRouter()
   const { ticket, updateTicket } = useTicketStore(state => state)
+  const { user } = useUserStore(state => state)
+
   const [form] = Form.useForm<UpdateTicketInfoForm>()
 
-  // --- new state to control uploaded files and keep Upload/Form in sync
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   useEffect(() => {
@@ -42,7 +45,6 @@ export const EditTicket: React.FC = () => {
   }
 
   const onFinish = async (values: UpdateTicketInfoForm) => {
-    console.log("Received values of form: ", values)
     const proovesPaths =
       values.prooves?.fileList?.map(file => {
         // prefer server response path (new uploads), fallback to file.url (existing)
@@ -62,6 +64,10 @@ export const EditTicket: React.FC = () => {
       .catch(error => {
         console.error("Error creating ticket:", error)
       })
+  }
+
+  if (user!.id !== ticket!.user.id && !user!.role.includes(UserRoleEnum.ADMIN)) {
+    router.push(RoutesEnum.TICKETS + `/${ticket!.id}`)
   }
 
   return (

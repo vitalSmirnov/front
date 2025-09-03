@@ -13,14 +13,17 @@ import { CheckCircleTwoTone, Loading3QuartersOutlined, CloseCircleTwoTone } from
 import useToken from "antd/es/theme/useToken"
 import { SuggestGroupSelect } from "../../SuggestGroups/ui"
 import { SuggestUsersSelect } from "../../SuggestUsers/ui"
+import { useTicketStore } from "../../../shared/providers/ticketProvider"
 
 const { Text } = Typography
 
 export function FilterForm() {
   const [_, token] = useToken()
   const { user } = useUserStore(state => state)
+  const { getTickets, setTickets } = useTicketStore(state => state)
   const p = useSearchParams()
   const [form] = useForm<Omit<GetTicketsPayload, "limit" | "offset">>()
+  const searchParams = useSearchParams()
 
   const handleChange = (_: any, allValues: any) => {
     setParams({
@@ -28,6 +31,19 @@ export function FilterForm() {
       startDate: toIso(allValues?.startDate),
       endDate: toIso(allValues?.endDate),
     })
+    getTickets({
+      ...allValues,
+      startDate: toIso(allValues?.startDate),
+      endDate: toIso(allValues?.endDate),
+      limit: 100,
+      offset: searchParams.get("page") ? 100 * (Number(searchParams.get("page")) - 1) : 0,
+    })
+      .then(data => {
+        setTickets(data)
+      })
+      .catch(error => {
+        console.error("Error fetching tickets:", error)
+      })
   }
 
   const isAdmin = user!.role.includes(UserRoleEnum.ADMIN) || user!.role.includes(UserRoleEnum.PROFESSOR)
@@ -84,7 +100,7 @@ export function FilterForm() {
           <Select
             style={{ minWidth: 200 }}
             options={[
-              { label: "Все", value: "" },
+              { label: "Все", value: undefined },
               {
                 label: (
                   <Text style={{ display: "flex", alignItems: "center", gap: 4 }}>

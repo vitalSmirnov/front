@@ -1,8 +1,8 @@
 "use client"
 
-import { Empty, Table } from "antd"
+import { Empty, Flex, Table } from "antd"
 import type { ColumnsType } from "antd/es/table"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useLayoutEffect, useState } from "react"
 import { Ticket } from "../../../shared/entities/Ticket/Ticket"
 import { useSearchParams } from "next/navigation"
 import { AppTag } from "../../../shared/ui/AppTag/ui"
@@ -19,6 +19,9 @@ import { ApprooveTicket } from "../../../features/ApprooveTicket/ui"
 import { RejectTicket } from "../../../features/RejectTicket/ui"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { AppImage } from "../../../shared/ui/Image"
+import { User } from "../../../shared/entities/User/User"
+import { useUserStore } from "../../../shared/providers/userProvider"
+import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
 
 const columns: ColumnsType<Ticket> = [
   {
@@ -84,10 +87,10 @@ const columns: ColumnsType<Ticket> = [
     key: "actions",
     render: (_: any, { id, status }: Ticket) => {
       return (
-        <>
+        <Flex gap={8}>
           {status !== StatusEnum.APPROVED && <ApprooveTicket ticketId={id} />}
           {status !== StatusEnum.REJECTED && <RejectTicket ticketId={id} />}
-        </>
+        </Flex>
       )
     },
   },
@@ -104,40 +107,15 @@ const columns: ColumnsType<Ticket> = [
 ]
 
 export const TicketTable: React.FC = () => {
-  const { tickets, total, getTickets, setTickets } = useTicketStore(state => state)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-
+  const { user } = useUserStore(state => state)
+  const { tickets } = useTicketStore(state => state)
   const searchParams = useSearchParams()
 
-  const fetchTickets = async () => {
-    setIsLoading(true)
-    getTickets({
-      userName: searchParams.get("userName") || undefined,
-      startDate: searchParams.get("startDate") || undefined,
-      group: searchParams.get("group") || undefined,
-      endDate: searchParams.get("endDate") || undefined,
-      status: (searchParams.get("status") as StatusEnum) || undefined,
-      limit: 100,
-      offset: searchParams.get("page") ? 100 * (Number(searchParams.get("page")) - 1) : 0,
-    })
-      .then(data => {
-        setTickets(data)
-      })
-      .catch(error => {
-        console.error("Error fetching tickets:", error)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }
-  useEffect(() => {
-    fetchTickets()
-  }, [searchParams])
+  const columnsRoles = user?.role.includes(UserRoleEnum.ADMIN) ? columns : [...columns.slice(0, 6), columns[8]]
 
   return (
     <Table
-      loading={isLoading}
-      columns={columns}
+      columns={columnsRoles}
       dataSource={tickets}
       rowKey='id'
       pagination={{

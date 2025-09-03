@@ -8,6 +8,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
     <html>
       <body>
         <Empty description={"Произошла неизвестная ошибка, попробуйте позже"} />
+        <p>{error.message}</p>
         <Link href={RoutesEnum.TICKETS}>На главную</Link>
       </body>
     </html>

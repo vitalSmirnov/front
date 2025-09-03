@@ -3,11 +3,13 @@ import { Ticket } from "../../../shared/entities/Ticket/Ticket"
 import { TicketStoreProvider } from "../../../shared/providers/ticketProvider"
 import { getServerTicketList } from "../../../widgets/TicketList/api"
 import TicketList from "../../../widgets/TicketList/ui"
+import { StatusEnum } from "../../../shared/entities/Ticket/StatusEnum"
 
 export default async function TicketsPage(params: {
   userName?: string
   startDate?: string
   group?: string
+  status?: StatusEnum
   endDate?: string
   limit?: string
   offset?: string
@@ -20,6 +22,7 @@ export default async function TicketsPage(params: {
       startDate: params.startDate ? new Date(params.startDate) : undefined,
       endDate: params.endDate ? new Date(params.endDate) : undefined,
       group: params.group ? params.group : undefined,
+      status: params.status ? params.status : undefined,
       limit: params.limit ? Number(params.limit) : undefined,
       offset: params.offset ? Number(params.offset) : undefined,
     })
