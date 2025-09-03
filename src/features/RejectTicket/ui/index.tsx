@@ -28,6 +28,7 @@ export const RejectTicket: React.FC<RejectTicketProps> = ({ ticketId }) => {
       color='#000000ff'
     >
       <Button
+        ghost
         danger
         onClick={handleApproove}
       >

@@ -12,7 +12,7 @@ AxiosInstance.interceptors.request.use(
     return config
   },
   error => {
-    toast.error(error.response?.data?.error || "Неизвестная ошибка")
+    console.error("Axios request error:", error)
     return Promise.reject(error.response?.data?.error)
   }
 )

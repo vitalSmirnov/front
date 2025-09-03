@@ -40,7 +40,7 @@ export const appTheme: ThemeConfig = {
       fontWeight: 600,
       paddingInline: "16px",
       colorSuccess: "#00BFA5",
-      colorError: "#FF7A30",
+      colorErrorBgActive: "#ff7a30",
       colorPrimary: "#000000",
       colorText: "#f2f2f2",
 
@@ -63,6 +63,9 @@ export const appTheme: ThemeConfig = {
     Select: {
       controlHeight: 40,
       colorBgContainer: "white",
+    },
+    Spin: {
+      colorPrimary: "white",
     },
   },
 }

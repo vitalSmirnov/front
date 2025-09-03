@@ -14,7 +14,6 @@ export const SuggestUsersSelect: React.FC<SuggestUsersSelectProps> = ({ ...props
     setLoading(true)
     suggestUsers()
       .then(res => {
-        console.log(res)
         const newOptions = res.data.users.map(user => ({
           label: user.name,
           value: user.name,

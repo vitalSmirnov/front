@@ -114,6 +114,7 @@ export const TicketTable: React.FC = () => {
     getTickets({
       userName: searchParams.get("userName") || undefined,
       startDate: searchParams.get("startDate") || undefined,
+      group: searchParams.get("group") || undefined,
       endDate: searchParams.get("endDate") || undefined,
       status: (searchParams.get("status") as StatusEnum) || undefined,
       limit: 100,

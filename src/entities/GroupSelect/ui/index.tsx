@@ -10,7 +10,7 @@ interface GroupSelectProps extends SelectProps {
 }
 
 export const GroupSelect: React.FC<GroupSelectProps> = ({ courseId, ...props }) => {
-  const [data, setData] = useState<GroupsResponse[]>([])
+  const [data, setData] = useState<{ id: string; identifier: string }[]>([])
   const [identifier, setIdentifier] = useState<string>()
   const defferedIdentifier = useDeferredValue(identifier)
   const [filters, setFilters] = useState<{ offset: number; limit: number }>({

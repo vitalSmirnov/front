@@ -21,7 +21,7 @@ export default function RootLayout({
           padding: "24px",
           backgroundColor: "white",
           borderRadius: "16px",
-          minWidth: "400px",
+          minWidth: "420px",
         }}
       >
         <h1 style={{ marginBottom: "24px" }}>Регистрация</h1>

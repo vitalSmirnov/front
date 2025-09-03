@@ -1,6 +1,5 @@
 "use client"
 
-import FormItem from "antd/es/form/FormItem"
 import { useState } from "react"
 import { useForm } from "antd/es/form/Form"
 import { Button, Flex, Form, Input, message } from "antd"
@@ -9,8 +8,10 @@ import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { LoginCredentials } from "../types"
 import { loginRequest } from "../api"
 import { toast } from "react-toastify"
+import useToken from "antd/es/theme/useToken"
 
 export const LoginUserUI = () => {
+  const [_, token] = useToken()
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isError, setError] = useState<string | null>(null)
 
@@ -29,7 +30,6 @@ export const LoginUserUI = () => {
         router.push(RoutesEnum.HOME)
       })
       .catch(error => {
-        console.log(error)
         toast.error(error.response?.data?.error || "Ошибка при входе в систему")
         setError(error.response?.data?.error || "Ошибка при входе в систему")
       })
@@ -43,34 +43,35 @@ export const LoginUserUI = () => {
       form={form}
       name='loginForm'
       layout='vertical'
+      validateMessages={{ required: "Пожалуйста, введите ваш ${label}!" }}
       onFinish={successAction}
-      validateMessages={isError ? { required: isError } : undefined}
       onFieldsChange={() => {
         setError(null)
       }}
     >
-      <FormItem
+      <Form.Item
         label={"Логин"}
         name={"login"}
-        rules={[{ message: "Пожалуйста, введите ваш логин" }]}
+        tooltip='Используйте вашу почту в качестве логина'
+        rules={[
+          { required: true, message: "Пожалуйста, введите ваш логин" },
+          { message: "Некорректный формат почты", type: "email" },
+        ]}
         required
-        validateStatus={isError ? "error" : undefined}
+        validateTrigger='onBlur'
       >
         <Input placeholder='username@gmail.com' />
-      </FormItem>
-      <FormItem
+      </Form.Item>
+      <Form.Item
         label={"Пароль"}
         name={"password"}
-        rules={[{ message: "Пожалуйста, введите пароль" }]}
+        rules={[{ required: true, message: "Пожалуйста, введите пароль" }]}
         required
-        validateStatus={isError ? "error" : undefined}
+        validateTrigger='onBlur'
       >
-        <Input
-          type='password'
-          placeholder='*********'
-        />
-      </FormItem>
-      <FormItem>
+        <Input.Password placeholder='*********' />
+      </Form.Item>
+      <Form.Item>
         <Flex gap='16px'>
           <Button
             block
@@ -83,14 +84,12 @@ export const LoginUserUI = () => {
             loading={isLoading}
             disabled={isError !== null}
             type='primary'
-            danger={isError ? true : false}
             htmlType='submit'
-            form='loginForm'
           >
             Войти
           </Button>
         </Flex>
-      </FormItem>
+      </Form.Item>
     </Form>
   )
 }

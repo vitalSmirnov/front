@@ -6,6 +6,7 @@ export interface GetTicketsPayload {
   startDate?: string
   endDate?: string
   limit?: number
+  group?: string
   offset?: number
   status?: StatusEnum
 }

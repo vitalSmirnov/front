@@ -38,10 +38,10 @@ export function FilterForm() {
       form={form}
       onValuesChange={handleChange}
       initialValues={{
-        userName: p.get("userName") || "",
+        userName: p.get("userName") || undefined,
         startDate: p.get("startDate") ? dayjs(p.get("startDate")!) : undefined,
         endDate: p.get("endDate") ? dayjs(p.get("endDate")!) : undefined,
-        status: p.get("status") ? dayjs(p.get("status")!) : undefined,
+        status: p.get("status") ? dayjs(p.get("status")!) : "Все",
       }}
     >
       <Flex
