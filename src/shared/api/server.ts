@@ -1,5 +1,6 @@
 import axios from "axios"
 import { getJwtTokenOnServer } from "../utils/getJwtTokenOnServer"
+import { toast } from "react-toastify"
 
 // Server-only Axios instance using absolute backend URL
 const backendURL = process.env.NEXT_PUBLIC_API_REDIRECT_URL || "http://localhost:3000/api"
@@ -44,6 +45,7 @@ AxiosServerInstance.interceptors.response.use(
 
         return AxiosServerInstance(originalRequest)
       } catch (refreshError) {
+        toast.error("Сессия истекла, пожалуйста, войдите снова.")
         console.error("Failed to refresh token", refreshError)
         return Promise.reject(refreshError)
       }

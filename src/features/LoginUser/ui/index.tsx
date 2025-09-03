@@ -8,9 +8,11 @@ import { useRouter } from "next/navigation"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
 import { LoginCredentials } from "../types"
 import { loginRequest } from "../api"
+import { toast } from "react-toastify"
 
 export const LoginUserUI = () => {
   const [isLoading, setLoading] = useState<boolean>(false)
+  const [isError, setError] = useState<string | null>(null)
 
   const [form] = useForm<LoginCredentials>()
 
@@ -27,7 +29,9 @@ export const LoginUserUI = () => {
         router.push(RoutesEnum.HOME)
       })
       .catch(error => {
-        console.error("Login error:", error)
+        console.log(error)
+        toast.error(error.response?.data?.error || "Ошибка при входе в систему")
+        setError(error.response?.data?.error || "Ошибка при входе в систему")
       })
       .finally(() => {
         setLoading(false)
@@ -40,12 +44,17 @@ export const LoginUserUI = () => {
       name='loginForm'
       layout='vertical'
       onFinish={successAction}
+      validateMessages={isError ? { required: isError } : undefined}
+      onFieldsChange={() => {
+        setError(null)
+      }}
     >
       <FormItem
         label={"Логин"}
         name={"login"}
         rules={[{ message: "Пожалуйста, введите ваш логин" }]}
         required
+        validateStatus={isError ? "error" : undefined}
       >
         <Input placeholder='username@gmail.com' />
       </FormItem>
@@ -54,6 +63,7 @@ export const LoginUserUI = () => {
         name={"password"}
         rules={[{ message: "Пожалуйста, введите пароль" }]}
         required
+        validateStatus={isError ? "error" : undefined}
       >
         <Input
           type='password'
@@ -64,7 +74,6 @@ export const LoginUserUI = () => {
         <Flex gap='16px'>
           <Button
             block
-            color='default'
             onClick={SignInHandler}
           >
             Регистрация
@@ -72,8 +81,9 @@ export const LoginUserUI = () => {
           <Button
             block
             loading={isLoading}
-            disabled={isLoading}
+            disabled={isError !== null}
             type='primary'
+            danger={isError ? true : false}
             htmlType='submit'
             form='loginForm'
           >

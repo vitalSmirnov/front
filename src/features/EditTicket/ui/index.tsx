@@ -90,7 +90,6 @@ export const EditTicket: React.FC = () => {
         onFinish={onFinish}
         form={form}
         initialValues={{
-          // prooves is initialized via useEffect -> form.setFieldsValue to include fileList
           ...ticket,
           startDate: ticket ? dayjs(ticket.startDate) : undefined,
           endDate: ticket ? dayjs(ticket.endDate) : undefined,

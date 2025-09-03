@@ -5,6 +5,7 @@ import { ConfigProvider } from "antd"
 import { appTheme } from "../shared"
 
 import "@ant-design/v5-patch-for-react-19"
+import { ToastContainer } from "react-toastify"
 
 export const metadata: Metadata = {
   title: "Больничные",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <body>
           <AntdRegistry>{children}</AntdRegistry>
         </body>
+        <ToastContainer />
       </html>
     </ConfigProvider>
   )

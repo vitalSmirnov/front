@@ -1,7 +1,7 @@
 "use client"
 
-import { Button, Form, Tooltip, Typography, Upload } from "antd"
-import React from "react"
+import { Button, Form, Typography, Upload, UploadFile } from "antd"
+import React, { useState } from "react"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
 import { CreateTicketInfoPayload } from "../types"
 import { useRouter } from "next/navigation"
@@ -17,6 +17,14 @@ export const CreateTicket: React.FC = () => {
   const router = useRouter()
   const { createTicket } = useTicketStore(state => state)
   const [form] = Form.useForm()
+
+  // --- new state to control uploaded files and keep Upload/Form in sync
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+
+  const handleUploadChange = ({ fileList: newList }: { fileList: UploadFile[] }) => {
+    setFileList(newList)
+    form.setFieldsValue({ prooves: { fileList: newList } })
+  }
 
   const onFinish = async (values: CreateTicketInfoPayload) => {
     createTicket(values)
@@ -51,11 +59,16 @@ export const CreateTicket: React.FC = () => {
         <Form.Item
           name='prooves'
           label='Подтверждения'
-          help='Можно загрузить несколько файлов в форматах jpg, png, pdf'
+          help='Можно загрузить до 5 файлов в форматах jpg, png, pdf'
+          getValueFromEvent={(e: any) => ({ fileList: e?.fileList })}
         >
           <Upload
-            action='/api/upload'
-            accept='image/*,.pdf'
+            action={"/api/media/upload"}
+            method='POST'
+            listType='picture'
+            accept='image/png, image/jpeg, application/pdf'
+            fileList={fileList}
+            onChange={handleUploadChange}
             multiple
           >
             <Button icon={<UploadOutlined />}>Загрузить подтверждения</Button>

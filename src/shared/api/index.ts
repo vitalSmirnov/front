@@ -1,4 +1,5 @@
 import axios from "axios"
+import { toast } from "react-toastify"
 
 export const AxiosInstance = axios.create({
   baseURL: "/api",
@@ -11,7 +12,8 @@ AxiosInstance.interceptors.request.use(
     return config
   },
   error => {
-    return Promise.reject(error)
+    toast.error(error.response?.data?.error || "Неизвестная ошибка")
+    return Promise.reject(error.response?.data?.error)
   }
 )
 
@@ -50,6 +52,7 @@ AxiosInstance.interceptors.response.use(
 
         return AxiosInstance(originalRequest)
       } catch (refreshError) {
+        toast.error("Сессия истекла, пожалуйста, войдите снова.")
         console.error("Failed to refresh token", refreshError)
         return Promise.reject(refreshError)
       }
