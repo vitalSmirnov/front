@@ -11,3 +11,6 @@ export interface User {
   tickets: Ticket[]
   role: UserRoleEnum[]
 }
+export interface UserWithMail extends User {
+  login: string
+}

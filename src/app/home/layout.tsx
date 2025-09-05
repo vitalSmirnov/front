@@ -38,7 +38,7 @@ export default async function RootLayout({
         gridTemplateRows: "auto 9fr auto",
       }}
     >
-      <UserStoreProvider initState={userInfo ? { user: userInfo } : undefined}>
+      <UserStoreProvider initState={userInfo ? { user: userInfo, users: [] } : undefined}>
         <div
           style={{
             position: "sticky",

@@ -5,5 +5,6 @@ export interface GetUsersResponse {
       id: string
       name: string
     }[]
+    total: number
   }
 }

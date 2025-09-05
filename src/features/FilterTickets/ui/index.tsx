@@ -8,12 +8,12 @@ import dayjs from "dayjs"
 import { StatusEnum } from "../../../shared/entities/Ticket/StatusEnum"
 import { useUserStore } from "../../../shared/providers/userProvider"
 import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
-import { GetTicketsPayload } from "../../../entities/TicketTable/types"
 import { CheckCircleTwoTone, Loading3QuartersOutlined, CloseCircleTwoTone } from "@ant-design/icons"
 import useToken from "antd/es/theme/useToken"
 import { SuggestGroupSelect } from "../../SuggestGroups/ui"
 import { SuggestUsersSelect } from "../../SuggestUsers/ui"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
+import { FilterFormProps } from "../types"
 
 const { Text } = Typography
 
@@ -22,10 +22,10 @@ export function FilterForm() {
   const { user } = useUserStore(state => state)
   const { getTickets, setTickets } = useTicketStore(state => state)
   const p = useSearchParams()
-  const [form] = useForm<Omit<GetTicketsPayload, "limit" | "offset">>()
+  const [form] = useForm<FilterFormProps>()
   const searchParams = useSearchParams()
 
-  const handleChange = (_: any, allValues: any) => {
+  const handleChange = (_: any, allValues: FilterFormProps) => {
     setParams({
       ...allValues,
       startDate: toIso(allValues?.startDate),

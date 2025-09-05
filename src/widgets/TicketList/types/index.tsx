@@ -4,8 +4,8 @@ import { Ticket } from "../../../shared/entities/Ticket/Ticket"
 export interface GetTicketsPayload {
   status?: StatusEnum
   userName?: string
-  startDate?: Date
-  endDate?: Date
+  startDate?: string
+  endDate?: string
   limit?: number
   offset?: number
   group?: string
