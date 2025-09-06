@@ -1,8 +1,14 @@
 ## Getting Started
 
-First, create .env file with structure described into .env.example
+1. First, create .env file with structure described into .env.example
 
-After you can run the development server:
+2. Install dependencies with command:
+
+```sh
+npm install
+```
+
+3. After you can run the development server:
 
 ```sh
 npm run dev
