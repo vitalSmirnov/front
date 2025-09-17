@@ -14,7 +14,7 @@ export const SuggestGroupSelect: React.FC<SuggestGroupSelectProps> = ({ ...props
     setLoading(true)
     getGroups({})
       .then(res => {
-        const newOptions = res.data.map(group => ({
+        const newOptions = res.data.groups.map(group => ({
           label: group.identifier,
           value: group.id,
         }))

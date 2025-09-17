@@ -1,20 +1,22 @@
 "use client"
 
-import { DatePicker, Form, FormInstance } from "antd"
+import { DatePicker, Form, FormInstance, FormItemProps } from "antd"
 import React from "react"
 
-interface SelectDatesProps {
+interface SelectDatesProps extends FormItemProps {
   form: FormInstance
 }
 
-export const SelectDates: React.FC<SelectDatesProps> = ({ form }) => {
+export const SelectDates: React.FC<SelectDatesProps> = ({ form, ...props }) => {
   const endDate = Form.useWatch(["endDate"], form)
   const startDate = Form.useWatch(["startDate"], form)
 
   return (
-    <>
+    <div
+      {...props}
+      style={{ display: "flex", gap: 16 }}
+    >
       <Form.Item
-        {...form}
         name='startDate'
         label='Начало'
       >
@@ -24,7 +26,6 @@ export const SelectDates: React.FC<SelectDatesProps> = ({ form }) => {
         />
       </Form.Item>
       <Form.Item
-        {...form}
         name='endDate'
         label='Конец'
       >
@@ -33,6 +34,6 @@ export const SelectDates: React.FC<SelectDatesProps> = ({ form }) => {
           placeholder='Конец'
         />
       </Form.Item>
-    </>
+    </div>
   )
 }

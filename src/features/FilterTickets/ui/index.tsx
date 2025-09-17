@@ -20,10 +20,10 @@ const { Text } = Typography
 
 export function FilterForm() {
   const [_, token] = useToken()
+  const [form] = useForm<FilterFormProps>()
   const { user } = useUserStore(state => state)
   const { getTickets, setTickets } = useTicketStore(state => state)
   const p = useSearchParams()
-  const [form] = useForm<FilterFormProps>()
   const searchParams = useSearchParams()
 
   const handleChange = (_: any, allValues: FilterFormProps) => {
@@ -55,10 +55,10 @@ export function FilterForm() {
       form={form}
       onValuesChange={handleChange}
       initialValues={{
-        userName: p.get("userName") || undefined,
-        startDate: p.get("startDate") ? dayjs(p.get("startDate")!) : undefined,
-        endDate: p.get("endDate") ? dayjs(p.get("endDate")!) : undefined,
-        status: p.get("status") ? dayjs(p.get("status")!) : "Все",
+        userName: p.get("userName") || "",
+        startDate: p.get("startDate") ? dayjs(p.get("startDate")!) : "",
+        endDate: p.get("endDate") ? dayjs(p.get("endDate")!) : "",
+        status: p.get("status") ? p.get("status")! : "",
       }}
     >
       <Flex
