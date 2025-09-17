@@ -66,23 +66,25 @@ export const GrantRolesControls: React.FC<GrantRolesControlsProps> = ({ userId, 
       >
         <Flex gap={8}>
           {includedRoles.map(role => (
-            <Button
-              type='primary'
-              danger
-              onClick={() => revokeRoles(role)}
+            <Tooltip
               key={role + "_included"}
+              title='Установленная роль'
             >
-              {role}
-            </Button>
+              <Button
+                type='primary'
+                onClick={() => revokeRoles(role)}
+              >
+                {role}
+              </Button>
+            </Tooltip>
           ))}
           {excludedRoles.map(role => (
-            <Button
-              type='primary'
-              onClick={() => assignRoles(role)}
+            <Tooltip
               key={role + "_excluded"}
+              title='Отсутствующая роль'
             >
-              {role}
-            </Button>
+              <Button onClick={() => assignRoles(role)}>{role}</Button>
+            </Tooltip>
           ))}
         </Flex>
       </Modal>

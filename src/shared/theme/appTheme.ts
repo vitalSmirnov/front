@@ -9,7 +9,7 @@ export const appTheme: ThemeConfig = {
     colorBgElevated: "#FFFFFF",
     colorBgLayout: "#000000",
     colorFillSecondary: "#8e8e8eff",
-    colorError: "#FF7A30",
+    colorError: "#ff3a30ff",
     colorSuccess: "#00BFA5",
     colorInfo: "#e7d336ff",
     colorLink: "#4880FF",
@@ -51,7 +51,7 @@ export const appTheme: ThemeConfig = {
       fontWeight: 600,
       paddingInline: "16px",
       colorSuccess: "#00BFA5",
-      colorErrorBgActive: "#ff7a30",
+      colorErrorBgActive: "#ff3a30ff",
       colorPrimary: "#000000",
       colorText: "#f2f2f2",
 
