@@ -15,27 +15,35 @@ import { SuggestUsersSelect } from "../../SuggestUsers/ui"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
 import { FilterFormProps } from "../types"
 import { SelectDates } from "../../SelectDates/ui"
+import { useEffect, useState } from "react"
+import { useDebounce } from "../../../shared/hooks/useDebounce"
 
 const { Text } = Typography
 
 export function FilterForm() {
   const [_, token] = useToken()
   const [form] = useForm<FilterFormProps>()
+  const [formParams, setFormParams] = useState<FilterFormProps>()
   const { user } = useUserStore(state => state)
   const { getTickets, setTickets } = useTicketStore(state => state)
   const p = useSearchParams()
   const searchParams = useSearchParams()
+  const debouncedParams = useDebounce(formParams, 500)
 
   const handleChange = (_: any, allValues: FilterFormProps) => {
+    setFormParams(allValues)
+  }
+
+  useEffect(() => {
     setParams({
-      ...allValues,
-      startDate: toIso(allValues?.startDate),
-      endDate: toIso(allValues?.endDate),
+      ...debouncedParams,
+      startDate: toIso(debouncedParams?.startDate),
+      endDate: toIso(debouncedParams?.endDate),
     })
     getTickets({
-      ...allValues,
-      startDate: toIso(allValues?.startDate),
-      endDate: toIso(allValues?.endDate),
+      ...debouncedParams,
+      startDate: toIso(debouncedParams?.startDate),
+      endDate: toIso(debouncedParams?.endDate),
       limit: 100,
       offset: searchParams.get("page") ? 100 * (Number(searchParams.get("page")) - 1) : 0,
     })
@@ -45,7 +53,7 @@ export function FilterForm() {
       .catch(error => {
         console.error("Error fetching tickets:", error)
       })
-  }
+  }, [debouncedParams])
 
   const isAdmin = user!.role.includes(UserRoleEnum.ADMIN) || user!.role.includes(UserRoleEnum.PROFESSOR)
 

@@ -11,6 +11,8 @@ import useToken from "antd/es/theme/useToken"
 import { SuggestUsersSelect } from "../../SuggestUsers/ui"
 import { SuggestGroupSelect } from "../../SuggestGroups/ui"
 import { FilterUsersFormProps } from "../types"
+import { useDebounce } from "../../../shared/hooks/useDebounce"
+import { useEffect, useState } from "react"
 
 const { Text } = Typography
 
@@ -19,14 +21,21 @@ export function FilterUsers() {
   const { getUsers, setUsers } = useUserStore(state => state)
   const p = useSearchParams()
   const [form] = useForm<FilterUsersFormProps>()
+  const [formParams, setFormParams] = useState<FilterUsersFormProps>()
   const searchParams = useSearchParams()
 
+  const debouncedParams = useDebounce(formParams, 500)
+
   const handleChange = (_: any, allValues: FilterUsersFormProps) => {
+    setFormParams(allValues)
+  }
+
+  useEffect(() => {
     setParams({
-      ...allValues,
+      ...debouncedParams,
     })
     getUsers({
-      ...allValues,
+      ...debouncedParams,
       limit: 100,
       offset: searchParams.get("page") ? 100 * (Number(searchParams.get("page")) - 1) : 0,
     })
@@ -36,7 +45,7 @@ export function FilterUsers() {
       .catch(error => {
         console.error("Error fetching tickets:", error)
       })
-  }
+  }, [debouncedParams])
 
   return (
     <Form
