@@ -69,6 +69,7 @@ export function FilterForm() {
         {isAdmin ? (
           <>
             <Form.Item
+              style={{ minWidth: 300 }}
               name='userName'
               label='ФИО'
             >
