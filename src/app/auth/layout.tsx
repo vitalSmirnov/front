@@ -1,4 +1,4 @@
-import { Flex, Spin } from "antd"
+import { Spin } from "antd"
 import type { Metadata } from "next"
 import { Suspense } from "react"
 

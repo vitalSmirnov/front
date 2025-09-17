@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { UserWithMail } from "../../../shared/entities/User/User"
 import { Descriptions, Flex, List, Tooltip, Typography } from "antd"
 import { AppTag } from "../../../shared/ui/AppTag/ui"
 import { UserRoleEnum } from "../../../shared/entities/RoleEnum/UserRoleEnum"
@@ -14,6 +13,7 @@ import { translateReason } from "../../TicketTable/utils"
 import { useUserStore } from "../../../shared/providers/userProvider"
 import { useUserProfileStore } from "../../../shared/providers/userProfileProvider"
 import { GrantRolesControls } from "../../../features/GrantRoles/ui"
+import dayjs from "dayjs"
 
 const { Title, Text } = Typography
 
@@ -110,22 +110,23 @@ export const ConcreteUser = () => {
             style={{ margin: 0 }}
             level={2}
           >
-            Последние заявки
+            Заявки
           </Title>
           <Flex
             align='center'
             justify='center'
           >
             <List
+              bordered
               dataSource={profile!.tickets}
               renderItem={item => {
                 return (
                   <List.Item key={item.id}>
                     <Descriptions>
                       <Descriptions.Item label='Имя'>{item.name}</Descriptions.Item>
-                      <Descriptions.Item label='Описание'>{item.name}</Descriptions.Item>
-                      <Descriptions.Item label='С'>{item.name}</Descriptions.Item>
-                      <Descriptions.Item label='По'>{item.name}</Descriptions.Item>
+                      <Descriptions.Item label='С'>{dayjs(item.startDate).format("DD-MM-YYYY")}</Descriptions.Item>
+                      <Descriptions.Item label='По'>{dayjs(item.endDate).format("DD-MM-YYYY")}</Descriptions.Item>
+                      <Descriptions.Item label='Описание'>{item.description}</Descriptions.Item>
                       <Descriptions.Item label='Статус'>{translateStatus[item.status]}</Descriptions.Item>
                       <Descriptions.Item label='Причина'>{translateReason[item.reason]}</Descriptions.Item>
                     </Descriptions>

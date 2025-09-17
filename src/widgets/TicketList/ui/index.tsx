@@ -6,7 +6,6 @@ import { Button, Flex } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import Link from "next/link"
 import { RoutesEnum } from "../../../shared/router/routesEnum"
-import { FilterUsers } from "../../../features/FilterUsers/ui"
 
 export default function TicketList() {
   return (
@@ -15,7 +14,7 @@ export default function TicketList() {
         align='center'
         gap={16}
       >
-        <FilterUsers />
+        <FilterForm />
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "8px" }}>
           <Button icon={<PlusOutlined />}>
             <Link href={RoutesEnum.CREATE_TICKET}>Создать заявку</Link>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "antd/es/form/Form"
-import { DatePicker, Flex, Form, Input, Select, Typography } from "antd"
+import { Flex, Form, Select, Typography } from "antd"
 import { setParams, toIso } from "../utils"
 import { useSearchParams } from "next/navigation"
 import dayjs from "dayjs"
@@ -14,6 +14,7 @@ import { SuggestGroupSelect } from "../../SuggestGroups/ui"
 import { SuggestUsersSelect } from "../../SuggestUsers/ui"
 import { useTicketStore } from "../../../shared/providers/ticketProvider"
 import { FilterFormProps } from "../types"
+import { SelectDates } from "../../SelectDates/ui"
 
 const { Text } = Typography
 
@@ -65,7 +66,7 @@ export function FilterForm() {
         gap={16}
         wrap='wrap'
       >
-        {isAdmin && (
+        {isAdmin ? (
           <>
             <Form.Item
               name='userName'
@@ -80,27 +81,19 @@ export function FilterForm() {
               <SuggestGroupSelect />
             </Form.Item>
           </>
+        ) : (
+          <></>
         )}
-        <Form.Item
-          name='startDate'
-          label='Начало'
-        >
-          <DatePicker placeholder='Начало' />
-        </Form.Item>
-        <Form.Item
-          name='endDate'
-          label='Конец'
-        >
-          <DatePicker placeholder='Конец' />
-        </Form.Item>
+        <SelectDates form={form} />
         <Form.Item
           name='status'
           label='Статус'
         >
           <Select
+            allowClear
             style={{ minWidth: 200 }}
             options={[
-              { label: "Все", value: undefined },
+              { label: "Все", value: "" },
               {
                 label: (
                   <Text style={{ display: "flex", alignItems: "center", gap: 4 }}>

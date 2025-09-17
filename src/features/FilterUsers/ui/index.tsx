@@ -11,7 +11,6 @@ import useToken from "antd/es/theme/useToken"
 import { SuggestUsersSelect } from "../../SuggestUsers/ui"
 import { SuggestGroupSelect } from "../../SuggestGroups/ui"
 import { FilterUsersFormProps } from "../types"
-import { group } from "console"
 
 const { Text } = Typography
 

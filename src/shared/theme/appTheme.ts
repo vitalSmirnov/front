@@ -2,15 +2,26 @@ import type { ThemeConfig } from "antd"
 
 export const appTheme: ThemeConfig = {
   token: {
-    fontFamily: "Arial, Helvetica, sans-serif",
-    fontSize: 16,
     colorPrimary: "#4880FF",
+
     colorBgBase: "#f2f2f2",
+    colorBgContainer: "#FFFFFF",
+    colorBgElevated: "#FFFFFF",
+    colorBgLayout: "#000000",
     colorFillSecondary: "#8e8e8eff",
     colorError: "#FF7A30",
     colorSuccess: "#00BFA5",
     colorInfo: "#e7d336ff",
     colorLink: "#4880FF",
+    colorTextBase: "#000000",
+    colorText: "#000000",
+    colorTextLightSolid: "#FFFFFF",
+    colorBorder: "#d9d9d9",
+    borderRadius: 8,
+    controlHeight: 40,
+    controlOutline: "rgba(72, 128, 255, 0.1)",
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: 16,
   },
   components: {
     Form: {
