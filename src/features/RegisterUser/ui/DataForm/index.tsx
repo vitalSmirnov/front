@@ -9,9 +9,8 @@ export const DataUserForm: React.FC<FormProps> = ({ ...props }) => {
   const courseId = Form.useWatch("course", props.form) as string
 
   useEffect(() => {
-    props.form!.setFieldsValue({ groups: undefined }) 
+    props.form!.setFieldsValue({ groups: undefined })
   }, [courseId])
-
 
   return (
     <>
@@ -28,7 +27,7 @@ export const DataUserForm: React.FC<FormProps> = ({ ...props }) => {
         </Form.Item>
         <Form.Item
           label={"Группа"}
-          name='groups'
+          name='group'
           required
         >
           <GroupSelect courseId={courseId} />

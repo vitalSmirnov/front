@@ -28,13 +28,16 @@ export const RegisterUserUI = () => {
   const handleFinish = async (finishedName: string) => {
     await form.validateFields()
     if (finishedName === "passwordForm") {
-      const allValues: RegisterCredentials = form.getFieldsValue(true)
-        setLoading(true)
-        registerRequest(allValues).then(res => {
-            router.push(RoutesEnum.HOME)
-        }). catch(e => {
-          console.log('Ошибка регистрации', e)
-        }).finally(() => {
+      const allValues: RegisterCredentials = { ...form.getFieldsValue(true), confirmPassword: undefined }
+      setLoading(true)
+      registerRequest({ ...allValues } as RegisterCredentials)
+        .then(res => {
+          router.push(RoutesEnum.HOME)
+        })
+        .catch(e => {
+          console.log("Ошибка регистрации", e)
+        })
+        .finally(() => {
           setLoading(false)
         })
     } else {
@@ -46,7 +49,6 @@ export const RegisterUserUI = () => {
 
   const submitCurrent = () => {
     form.submit()
-
   }
 
   return (

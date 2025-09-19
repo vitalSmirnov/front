@@ -1,13 +1,14 @@
 "use client"
 
-import { Select, SelectProps } from "antd"
-import React, { useDeferredValue, useEffect, useState } from "react"
-import { CourseResponse } from "../types"
+import { Select } from "antd"
+import React, { useEffect, useState } from "react"
 import { getCourse } from "../api"
+import { Course } from "../../../shared/entities/Course/course"
+import { CourseSelectProps } from "../types"
 
-export const CourseSelect: React.FC<SelectProps> = ({ ...props }) => {
-  const [data, setData] = useState<CourseResponse[]>([])
-  const [identifier, setIdentifier] = useState<string | undefined>(undefined)
+export const CourseSelect: React.FC<CourseSelectProps> = ({ groupId, ...props }) => {
+  const [data, setData] = useState<Course[]>([])
+  const [identifier, setIdentifier] = useState<string | undefined>(groupId)
   const [filters, setFilters] = useState<{ offset: number; limit: number }>({
     limit: 100,
     offset: 0,
@@ -19,10 +20,10 @@ export const CourseSelect: React.FC<SelectProps> = ({ ...props }) => {
     getCourse({
       limit: filters.limit,
       offset: filters.offset,
-      identifier: identifier,
+      group: identifier,
     })
       .then(response => {
-        setData(response)
+        setData(response.data.courses)
       })
       .catch(error => {
         console.error("Error fetching groups:", error)
@@ -43,7 +44,7 @@ export const CourseSelect: React.FC<SelectProps> = ({ ...props }) => {
       showSearch
       onSearch={setIdentifier}
       options={data.map(group => ({
-        label: group.identifier,
+        label: group.name,
         value: group.id,
       }))}
     />

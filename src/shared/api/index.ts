@@ -53,6 +53,9 @@ AxiosInstance.interceptors.response.use(
         return AxiosInstance(originalRequest)
       } catch (refreshError) {
         toast.error("Сессия истекла, пожалуйста, войдите снова.")
+        setTimeout(() => {
+          window.location.href = "/auth/login"
+        }, 1000)
         console.error("Failed to refresh token", refreshError)
         return Promise.reject(refreshError)
       }

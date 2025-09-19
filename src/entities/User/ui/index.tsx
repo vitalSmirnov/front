@@ -20,6 +20,7 @@ const { Title, Text } = Typography
 export const ConcreteUser = () => {
   const { user: currentUser } = useUserStore(state => state)
   const { profile } = useUserProfileStore(state => state)
+  console.log(profile)
   return (
     <div style={{ display: "grid", gridTemplateRows: "auto 1fr", height: "100%" }}>
       <Flex
@@ -78,12 +79,14 @@ export const ConcreteUser = () => {
             </SectionContainer>
             <SectionContainer>
               <Title level={5}>Обучение</Title>
-              {profile!.role.includes(UserRoleEnum.ADMIN) && profile!.course && (
+              {profile!.role.includes(UserRoleEnum.ADMIN) && profile!.group.course && (
                 <AppTag
                   variant='primary'
                   style={{ marginLeft: "8px" }}
                 >
-                  <AppLink href={RoutesEnum.TICKETS + `?course=${profile!.course.id}`}>{profile!.course.name}</AppLink>
+                  <AppLink href={RoutesEnum.TICKETS + `?course=${profile!.group.course.id}`}>
+                    {profile!.group.course.name}
+                  </AppLink>
                 </AppTag>
               )}
               {profile!.role.includes(UserRoleEnum.ADMIN) && profile!.group && (
@@ -98,7 +101,7 @@ export const ConcreteUser = () => {
               )}
               {profile!.role.includes(UserRoleEnum.STUDENT) && (
                 <>
-                  <AppTag variant='info'>Курс: {profile!.course.name}</AppTag>
+                  <AppTag variant='info'>Курс: {profile!.group.course.name}</AppTag>
                   <AppTag variant='info'>Группа: {profile!.group.identifier}</AppTag>
                 </>
               )}

@@ -1,9 +1,16 @@
+import { SelectProps } from "antd"
+import { Course } from "../../../shared/entities/Course/course"
+
+export interface CourseSelectProps extends SelectProps {
+  groupId?: string
+}
+
 export interface CoursePayload {
   limit?: number
   offset?: number
-  identifier?: string
+  group?: string
 }
 export interface CourseResponse {
-  id: string
-  identifier: string
+  courses: Course[]
+  total: number
 }

@@ -21,11 +21,14 @@ export const ConcreteTicket: React.FC = () => {
   const { ticket } = useTicketStore(state => state)
   const { user } = useUserStore(state => state)
 
-  const isAbleToEdit = user!.role.includes(UserRoleEnum.ADMIN) || user?.id === ticket?.user.id
+  const isAbleToEdit =
+    (user!.role.includes(UserRoleEnum.ADMIN) || user?.id === ticket?.user.id) && ticket?.status === StatusEnum.PENDING
 
   if (!ticket) {
     return notFound()
   }
+
+  const userGroup = ticket.user.group
 
   return (
     <div style={{ display: "grid", gridTemplateRows: "auto 1fr", height: "100%" }}>
@@ -86,23 +89,21 @@ export const ConcreteTicket: React.FC = () => {
             align={"center"}
           >
             <AppLink href={RoutesEnum.TICKETS + `?userName=${ticket.user.name}`}>{ticket.user.name}</AppLink>
-            {ticket.user.role.includes(UserRoleEnum.ADMIN) && ticket.user.course && (
+            {userGroup && userGroup.course && (
               <AppTag
                 variant='primary'
                 style={{ marginLeft: "8px" }}
               >
-                <AppLink href={RoutesEnum.TICKETS + `?course=${ticket.user.course.id}`}>
-                  {ticket.user.course.name}
-                </AppLink>
+                <AppLink href={RoutesEnum.TICKETS + `?course=${userGroup.course.id}`}>{userGroup.course.name}</AppLink>
               </AppTag>
             )}
-            {ticket.user.role.includes(UserRoleEnum.ADMIN) && ticket.user.group && (
+            {userGroup && (
               <AppTag
                 variant='primary'
                 style={{ marginLeft: "8px" }}
               >
-                <AppLink href={RoutesEnum.TICKETS + `?group=${ticket.user.group.id}`}>
-                  {ticket.user.group.identifier + ` Группа`}
+                <AppLink href={RoutesEnum.TICKETS + `?group=${userGroup.id}`}>
+                  {userGroup.identifier + ` Группа`}
                 </AppLink>
               </AppTag>
             )}

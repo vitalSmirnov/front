@@ -28,7 +28,7 @@ export const GroupSelect: React.FC<GroupSelectProps> = ({ courseId, ...props }) 
       courseId: courseId,
     })
       .then(response => {
-        setData(response.data)
+        setData(response.data.groups)
       })
       .catch(error => {
         console.error("Error fetching groups:", error)

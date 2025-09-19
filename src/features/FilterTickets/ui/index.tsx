@@ -66,7 +66,6 @@ export function FilterForm() {
         userName: p.get("userName") || "",
         startDate: p.get("startDate") ? dayjs(p.get("startDate")!) : "",
         endDate: p.get("endDate") ? dayjs(p.get("endDate")!) : "",
-        status: p.get("status") ? p.get("status")! : "",
       }}
     >
       <Flex
@@ -102,7 +101,6 @@ export function FilterForm() {
             allowClear
             style={{ minWidth: 200 }}
             options={[
-              { label: "Все", value: "" },
               {
                 label: (
                   <Text style={{ display: "flex", alignItems: "center", gap: 4 }}>
